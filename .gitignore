@@ -1,0 +1,10 @@
+#gitignore for ANTUR
+
+# testfiles
+testing/
+SPANISH.SCE
+TXTBLANK.SCE
+OUT.SCE
+
+
+
