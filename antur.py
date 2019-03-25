@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------
 
 __author__ = "Stefan Vogt"
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 import sys
 import os.path
@@ -66,7 +66,7 @@ tokensSpanish = "/TOK\n_____\n_que_\na_de_\no_de_\n_una_\n_del_\ns_de_\n\
 _de_l\n_con_\nente_\n_por_\n_está\ntiene\ns_un_\nante_\n_para\n_las_\nentra\n\
 n_el_\ne_de_\na_la_\nerior\nción_\nando_\niente\n_el_\n_la_\n_de_\n_con\n\
 _en_\nlos_\nado_\n_se_\nesta\n_un_\nlas_\nenta\n_des\n_al_\nada_\nas_\nes_\n\
-os_\n_y_\nado\n11te_\nada\nla_\nen1t\nres\nque\nan_\no_p\nrec\nido\ns,_\nant\n\
+os_\n_y_\nado\nte_\nada\nla_\nent\nres\nque\nan_\no_p\nrec\nido\ns,_\nant\n\
 ina\nida\nlar\nero\nmpl\na_\no_\ner\nes\nor\nar\nal\nen\nas\nos\ne_\nan\nel\n\
 on\nin\nci\nun\n._\nco\nre\ndi\n,_\nur\ntr\nde\nsu\nab\nol\nam\nst\ncu\ns_\n\
 ac\nil\ngr\nad\nte\ny_\nim\nto\nue\npi\ngu\nch\nca\nla\nn_\nro\nri\nlo\nmi\n\
@@ -98,8 +98,11 @@ _       _       AT      0               ; Starting game\n\
                 PROCESS 6               ; then we need init sequence\n\n\
 _       _       WINDOW  0               ; Select graphics window\n\
                 CLEAR   DarkF           ; Assume light\n\
+                MINUS   2       1       ; Decrement flag 2\n\
                 NOTZERO 0\n\
+                MINUS   3       1       ; & Flag 3 if Dark\n\
                 ABSENT  0\n\
+                MINUS   4       1       ; & Flag 4 if No Lamp\n\
                 SET     DarkF           ; Dark\n\n\
 ; This needs to be commented for text-only adventures\n\
 ; _       _       PICTURE [Player]        ; If there is a picture, Load it\n\
@@ -116,6 +119,14 @@ _       _       PROCESS 1\n\n\
 ;------------------------------------------------------------------------------\n\
 /PRO 1\n\
 _       _       PROCESS 4               ; Do process 2 stuff here\n\n\
+_       _       MINUS   5       1       ; Update auto flags\n\
+                MINUS   6       1       ; These are not supported anymore\n\
+                MINUS   7       1       ; as we use the low section as\n\
+                MINUS   8       1       ; a small stack\n\
+                NOTZERO 0               ; But should you need them\n\
+                MINUS   9       1       ; this is the Version 1 DAAD code!\n\
+                ABSENT  0\n\
+                MINUS   10      1\n\n\
 _       _       PARSE   0               ; Get next LS from current buffer\n\
                 PROCESS 2               ; Failed cos of invalid or timeout\n\
                 REDO\n\n\
