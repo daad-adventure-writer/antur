@@ -67,7 +67,7 @@ The generated output files are .SCE files as well, but DAAD's implementation, wh
 ANTUR creates files that highly likely compile with `DC.EXE` (DAAD's compiler) out of the box. That doesn't mean though you won't need to touch the sources. Here are a few things you should definitely check after the compilation process:
 
 * Does the inventory code still work? PAWs used an `INVEN` CondAct which is not existing in DAAD, so when found it gets replaced by a few lines of code taken from DAAD's standard file template.
-* PAWs shows SYSMESS 11 when using the LISTAT CondAct and nothing is found. DAAD instead shows SYSMESS 53, so be sure to check if your game is affected and misbehaves. This is a very common issue after the conversion process.
+* PAWs INVEN uses SYSMESS 11 for "nothing". DAAD, as we already learned, uses LISTAT in the place of INVEN. LISTAT uses SYSMESS 53 for the "nothing" response in both PAWs and DAAD. PAWs users may have customised this message for container-specific LISTAT routines, so authors may wish to check and alter the message if necessary.
 * Object listings at locations: many PAWs adventures made use of the `LISTOBJ` CondAct for locations. ANTUR adds DAAD's equivalent of this at the beginning of `/PRO 3`. This could result in seeing the objects listed twice at locations if you keep the old implementation in. You may choose which one you keep but I suggest you go with DAAD's version as that makes use of the `DarkF` symbol, which is a pointer to the flag that defines whether a room is dark or not.
 * System messages: ANTUR replaces system message 10 with DAAD's standard value "You are wearing", which might not be wanted. ANTUR also swaps system messages `54-62` with DAAD's standard messages at these locations. Since this block controls tape and disk operations, it's mandatory that said messages remain. System messages in PAWs were located between 0-60, so it could be that the conversion process made you loose a few messages. If so, you should manually add these again to end of the system message block and refactor the code that triggers those messages by hand.
 * Since `SCORE and TURNS` CondActs are not available in DAAD, they get replaced with symbols pointing to DAAD's system flags for score and turns. This results in seeing just the bare integers on screen where you've read a fancy message in PAWs. You might want to work on this by adding new messages around those numbers to resemble the look and feel of PAWs.
@@ -77,7 +77,7 @@ ANTUR creates files that highly likely compile with `DC.EXE` (DAAD's compiler) o
 
 ## Installation
 
-For now, just download the contents of this repository and put `antur.py` into a directory of desire. I will create a PyPI package at a later date. The current version `0.2.0` is considered stable.
+For now, just download the contents of this repository and put `antur.py` into a directory of desire. I will create a PyPI package at a later date. The current version `0.2.1` is considered stable.
 
 ## Usage
 
