@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------
 
 __author__ = "Stefan Vogt"
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 import sys
 import os.path
@@ -84,9 +84,9 @@ El disco o el directorio puede estar lleno.\n\n/59\n\
 Nombre de fichero no válido.\n\n/60\nNombre del fichero:\n/61\n\
 Pon en marcha la cinta.\n\n/62\n¿Cinta o disco?\n"
 
-stxWornEnglish = "/10\nYou are wearing:\n\n/11"
+stxWornEnglish = "/10\nYou are wearing:\n\n/11\n"
 
-stxWornSpanish = "/10\nLlevas puesto:\n\n/11"
+stxWornSpanish = "/10\nLlevas puesto:\n\n/11\n"
 
 daadObjHeader = "\n;obj  starts  weight    c w  5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 \
 0    noun   adjective\n;num    at\n"
@@ -198,6 +198,12 @@ def spaceWarrior(dirtyString):
         cleanString = cleanString.replace(" \n", "\n")
     return cleanString
 
+# cleans trailing whitspace from MTX and STX
+def messageMagician(messageTexts):
+    while " \n" in messageTexts:
+        messageTexts = messageTexts.replace(" \n", "\n")
+    return messageTexts
+
 # changes PROCESS CondActs from old value to relocated table 
 def condActCop(pawsProcesses, conDict):
     for k, v in conDict.items():
@@ -230,9 +236,13 @@ def transcompile(defaultLang):
     stxTemp = stx + (pawsData[stxStart+4:stxEnd]) + ant
     # replace PAW's standard (worn) message with DAAD"s equivalent
     if defaultLang is False:
-        stxContent = re.sub("/10.*?/11", stxWornSpanish, stxTemp, flags=re.DOTALL)
+        # optimize Spanish message content for better parsing, replace SYSMESS 10
+        stxContent = messageMagician(stxTemp)
+        stxContent = re.sub("/10\n.*?/11\n", stxWornSpanish, stxTemp, flags=re.DOTALL)
     else:
-        stxContent = re.sub("/10.*?/11", stxWornEnglish, stxTemp, flags=re.DOTALL)
+        # optimize English message content for better parsing, replace SYSMESS 10
+        stxContent = messageMagician(stxTemp)
+        stxContent = re.sub("/10\n.*?/11\n", stxWornEnglish, stxTemp, flags=re.DOTALL)
     # replace 54-62 with DAAD"s mandatory messages
     if defaultLang is False:
         sysmes1 = re.sub("/54.*?/ANT", stxDiffSpanish, stxContent, flags=re.DOTALL)
